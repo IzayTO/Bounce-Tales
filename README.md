@@ -1,50 +1,42 @@
-# LUMO · Edición de bolsillo retro (V2, 2026)
+# Bounce Tales · Reconstrucción web PERSONAL v0.1
 
-Reconstrucción visual **original e independiente**, inspirada en las técnicas gráficas estudiadas de *Bounce Tales* (Rovio, Nokia, 2008). **No contiene el juego de Nokia** ni su código fuente, mapas originales, gráficos, música o texturas extraídas. Este proyecto sigue siendo **LUMO**: un homenaje jugable con estética mucho más próxima, no una conversión 1:1 ni un port.
+Código HTML/JavaScript propio, creado a partir de la comparación del JAR **Bounce Tales 2.0.28** proporcionado por el propietario y de información técnica del proyecto de decompilación [HelloOO7/BounceTales](https://github.com/HelloOO7/BounceTales). Se contrastó el enfoque con la metodología del proyecto [morluto/rea](https://github.com/morluto/rea). **REA no se ejecutó como herramienta en este entorno ni se integró en el juego**; el análisis se hizo con herramientas de inspección ZIP y un parser binario propio.
 
-## Qué cambió respecto a tu repositorio
+## PUBLICAR EN GITHUB PAGES SIN COMPARTIR LOS GRÁFICOS ORIGINALES
 
-- **Suelo y plataformas:** dejan de ser bloques rectangulares rígidos. El dibujado usa polígonos, contornos oscuros, franja de hierba viva y curvas suaves; la curva de colisión del suelo concuerda con su contorno visual.
-- **Paleta similar a los móviles S40:** cielo azul fuerte, capas de árboles y nubes, suelos muy oscuros, vegetación verde brillante y flores blancas grandes en el primer acto. Los actos posteriores conservan gamas violetas/doradas diferenciadas.
-- **Personaje:** pelota roja de contorno oscuro, volumen, brillo blanco, ojos expresivos; variantes ligeras y pesadas con aspecto propio.
-- **Elementos:** huevos con sombreado, plantas, hongos, plataformas flotantes, letrero de dirección, obstáculos, checkpoint, portales, enemigos y partículas. Ilustrados mediante Canvas, sin recursos ajenos.
-- **HUD:** contador de huevos, reloj compacto y vidas; menú ilustrado menos moderno, con opciones al estilo teléfono clásico.
-- **Se conservan:** 15 niveles originales de LUMO, teclado táctil, controles externos, música de ocho temas originales en MIDI/WebAudio, progresión y guardado local.
+1. Descomprime `BounceTales_Web_MOTOR_Publicable.zip` en tu iPhone.
+2. Sube sus archivos sueltos (`index.html`, `style.css`, `game.js`, `manifest.webmanifest` y este README) a la raíz de tu repositorio.
+3. Activa **Settings → Pages → Deploy from a branch → main → /(root)**.
+4. Abre la web desde Safari.
+5. Toca **IMPORTAR PAQUETE .BTPACK** y elige `BounceTales_PERSONAL.btpack`, que se entrega en una descarga SEPARADA, **solo para guardar en tu iPhone**.
+6. El paquete se lee y guarda exclusivamente en el navegador mediante IndexedDB. Ninguna imagen o dato del juego se envía a GitHub ni a ningún servidor.
 
-## Instalación desde iPhone / GitHub Pages
+> **No subas el `.jar` ni el `.btpack` a un repositorio público.** Los materiales extraídos del juego original podrían estar protegidos por derechos de autor, aunque tu propósito sea jugar tú mismo. Un repositorio privado y un hospedaje privado son opciones adicionales, pero GitHub Pages de un repositorio público no protege los archivos.
 
-1. Descomprime el ZIP con **Archivos**.
-2. En el repositorio GitHub, ve a **Add file > Upload files**.
-3. Selecciona **todos los archivos sueltos** de la carpeta descomprimida. No subas el ZIP ni la carpeta.
-4. Pulsa **Commit changes**.
-5. En **Settings > Pages**, elige **Deploy from a branch**, `main`, `/(root)` y **Save**.
-6. Espera a que la publicación termine. Abre `https://IzayTO.github.io/Bounce-Tales/`.
+## Funcionalidad real incluida
 
-El juego no necesita servidor de pago, librerías ni compilación. Al actualizar puede ser necesario recargar la página por la caché del navegador.
+- Lee un `.btpack` generado a partir del JAR que subiste.
+- Carga los PNG originales localmente y recorta 259 entradas de atlas, con otras 210 definiciones de sprite (simples, compuestos y animados).
+- Dibuja geometría triangulada **real** de los 15 archivos RLEF de niveles jugables; un 16.º archivo contiene objetos compartidos, no es una fase.
+- Recupera desde los datos RLEF la posición de jugador, 3D-free 2D geometría, huevos y diversos sprites; hace desplazamiento de cámara.
+- Implementa colisión aproximada mediante las aristas externas de triángulos, salto, movimiento, recolección de huevos, menú y selector de nivel, teclado Nokia virtual, soporte iPhone y progreso guardado.
+- El juego se ejecuta sin emulador J2ME, mediante Canvas y JavaScript.
 
-## Archivos principales
+## Límites que debes conocer
 
-- `index.html`: entrada GitHub Pages y estructura de los botones.
-- `style.css`: marco de teléfono responsivo y controles.
-- `game.js`: física, colisiones, cámara, progresión, controles y conexión al nuevo dibujado.
-- **`retro_art.js`**: nuevo motor de arte 2D, polígonos, plantas, personaje, enemigos, HUD y menú; contiene todos los dibujos de esta versión.
-- `levels.js`: los 15 niveles originales del prototipo, no los de Bounce Tales.
-- `scores.js`, `audio.js`, `musica_*.mid`: partituras, sintetizador y ocho archivos MIDI originales.
-- `icon.png`, `manifest.webmanifest`, `sw.js`: instalación y caché offline.
+Esta es **una primera reconstrucción funcional**, NO una conversión fiel 1:1 del motor Java ME: los eventos de scripts por nivel, jefes, interacciones complejas, plataformas móviles, agua, todas las transformaciones, afinación de físicas y secuencias finales **no están traducidos todavía**. El paso al nivel siguiente por desplazamiento al final es provisional. La reconstrucción permite **inspeccionar los escenarios auténticos, moverse y recoger objetos**; no garantiza completarlos tal como en el juego antiguo. Tampoco se ha ejecutado en un iPhone real todavía.
 
-## Referencia forense usada
+**Música:** el índice de tu JAR contiene referencias a ocho `.mid`, pero esos ocho archivos **no están presentes** en el ZIP aportado. Por eso no hemos añadido ninguna canción inventada y no puede sonar la OST original. Solo se sintetizan sonidos originales simples en algunos eventos (interacción, salto, recolección).
 
-[HelloOO7/BounceTales](https://github.com/HelloOO7/BounceTales), proyecto de decompilación de un juego Java ME. En concreto:
+## Licencias y referencias
 
-- `BounceTales/src/bouncetales/GeometryObject.java`: representación del terreno y otros objetos con vértices, índices y `Graphics.fillTriangle(...)`.
-- `BounceTales/src/bouncetales/SpriteObject.java`: uso de imágenes y selección de cuadros según temporizadores.
-- `BounceTales/src/bouncetales/BounceGame.java`: desplazamiento de fondos por capas, dibujo de recursos, HUD y menús.
-- `BounceTales/src/bouncetales/ResourceID.java`: catálogo de sprites, imágenes, niveles y música.
+- El runtime JavaScript y los estilos incluidos son creación nueva para esta reconstrucción de uso personal.
+- Los sprites y niveles importados desde el paquete `.btpack` se derivan del JAR proporcionado, no se redistribuyen junto con los archivos destinados a GitHub.
+- Repositorio de ingeniería inversa: https://github.com/HelloOO7/BounceTales
+- REA (metodología de inspección): https://github.com/morluto/rea
 
-Ese proyecto explica expresamente que **no incluye los recursos originales listos para utilizar**, que requieren un JAR del juego y una herramienta de extracción (`BounceComposer`). Este ZIP no los contiene ni implementa un emulador J2ME. Para lograr fidelidad total a la edición original habría que estudiar con autorización la versión exacta del JAR, su animación y sus mapas. No deben publicarse los materiales protegidos sin la licencia correspondiente.
+## Conservación y mantenimiento
 
-## Limitaciones y pruebas
-
-Probado sintácticamente con Node y renderizado en Chromium en un entorno aislado, tanto en menú como en nivel 1. La ejecución en un iPhone físico y la reproducción completa de los 15 niveles todavía deben validarse. La lógica de LUMO se conserva, pero el diseño y las físicas de sus niveles **no son idénticos** a *Bounce Tales*.
-
-© 2026. Código de la recreación visual elaborado para este prototipo. Ninguna marca ni obra original de Rovio/Nokia está incluida.
+- El `.btpack` personal es JSON codificado en UTF-8 con extensión específica, no un instalador. El código revisa la firma de formato antes de importarlo.
+- Puedes borrar datos locales del sitio en la configuración de Safari si deseas quitar el archivo privado almacenado allí.
+- Para recargarlo, usa «Cambiar paquete» debajo del juego.
